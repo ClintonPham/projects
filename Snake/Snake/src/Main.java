@@ -13,7 +13,7 @@ public class Main{
 		frame.setTitle("Snake Game");
  		
 		
-		
+		frame.setResizable(false);
 		frame.pack();
 		frame.setVisible(true);
 //		Middle screen

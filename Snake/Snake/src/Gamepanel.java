@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -22,7 +23,8 @@ public class Gamepanel extends JPanel implements Runnable, KeyListener{
 	private BodyPart b;
 	private ArrayList<BodyPart> snake;
 	
-	private int xCoor = 10, yCoor = 10, size = 25;
+	private int score = 0;
+	private int xCoor = 10, yCoor = 10, size = 1;
 	private int ticks = 0;
 	
 	private Apple apple;
@@ -67,7 +69,9 @@ public class Gamepanel extends JPanel implements Runnable, KeyListener{
 			snake.add(b);
 		}
 		ticks++;
-		if (ticks > 250000) {
+		
+//		Speed of snake
+		if (ticks > 850000) {
 			if(right) xCoor++;
 			if (left) xCoor--;
 			if (up) yCoor--;
@@ -96,6 +100,10 @@ public class Gamepanel extends JPanel implements Runnable, KeyListener{
 				size++;
 				apples.remove(i);
 				i++;
+				
+				
+				score = size;
+				System.out.println("Score is: " + score);
 			}
 		}
 		
@@ -104,13 +112,15 @@ public class Gamepanel extends JPanel implements Runnable, KeyListener{
 			if (xCoor == snake.get(i).getxCoor() && yCoor == snake.get(i).getyCoor()) {
 				if (i != snake.size() - 1) {
 					System.out.println("Game Over");
+					System.out.println("Test1");
 					stop();
 				}
 			}
 		}
 //		Collision on border
 		if (xCoor < 0 || xCoor > 49 || yCoor < 0 || yCoor > 49) {
-			System.out.println("Game Over");
+//			System.out.println("Game Over");
+			
 			stop();
 		}
 	}
@@ -121,6 +131,8 @@ public class Gamepanel extends JPanel implements Runnable, KeyListener{
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 
+ 
+		
 		for (int i = 0; i < WIDTH / 10; i++) {
 			g.drawLine(i * 10, 0, i * 10, HEIGHT);
 		}
@@ -134,6 +146,28 @@ public class Gamepanel extends JPanel implements Runnable, KeyListener{
 		for (int i = 0; i < apples.size(); i++) {
 			apples.get(i).draw(g);
 		}
+		
+
+//		scores
+		g.setColor(Color.WHITE);
+		g.setFont(new Font("serif", Font.BOLD, 25));
+		g.drawString(""+score, 590, 30);
+		
+//		Game Over
+		if (xCoor < 0 || xCoor > 49 || yCoor < 0 || yCoor > 49) {
+////			System.out.println("Game Over");
+			g.setColor(Color.RED);
+			g.setFont(new Font("serif", Font.BOLD, 30));
+			g.drawString("Score: " + score, 230, 300);
+//			g.setColor(Color.WHITE);
+//			g.setFont(new Font("serif", Font.BOLD, 25));
+//			g.drawString(""+score, 590, 30);
+//			System.out.println("Score: " + sco);
+//			g.setFont(new Font("serif", Font.BOLD, 20));
+//			g.drawString("Press Enter to restart", 230, 250);
+////			stop();
+		}
+		g.dispose();
 	}
 
 	@Override
@@ -155,6 +189,7 @@ public class Gamepanel extends JPanel implements Runnable, KeyListener{
 	public void keyPressed(KeyEvent e) {
  
 		int key = e.getKeyCode();
+		
 		if(key == KeyEvent.VK_RIGHT && !left) {
  			up = false;
 			down = false;
@@ -169,12 +204,26 @@ public class Gamepanel extends JPanel implements Runnable, KeyListener{
 		if(key == KeyEvent.VK_UP && !down) {
 			left = false;
 			up = true;
+			System.out.println("UP");
 			right = false;
 		}
 		if(key == KeyEvent.VK_DOWN && !up) {
 			left = false;
 			right = false;
 			down = true;
+		}
+		
+		if (key == KeyEvent.VK_ENTER || key == KeyEvent.VK_P) {
+//				start();
+				
+// 				repaint();
+//			revalidate();
+			System.out.println("ENTER");
+			
+  			removeAll();
+			repaint();
+				
+			
 		}
 	}
 
